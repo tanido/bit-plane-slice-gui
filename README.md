@@ -16,7 +16,7 @@ Run `bit-plane-slice-gui.py`, on the prompt window:
 2. Select the image file to process
 3. Select the export directory, exported file name is regulated as `original filename + bitplane number .jpg`
 
-### Example
+### Example 1
 Extract bitplane[0] (the MSB of bitplanes) of the image `./input/rgb.png` :
 ![gui window](readme.jpg)
 
@@ -24,10 +24,19 @@ Original image:
 
 ![rgb](/input/rgb.png)
 
-Bitplane[0]:
+|  Bitplane[0]  |  Bitplane[2] & [4] complex  |
+| ------------- | --------------------------- |
+| ![rgb0](/output/rgb_png_plane['0'].jpg) | ![rgb24](https://github.com/tanido/bit-plane-slice-gui/blob/master/output/rgb_png_plane%5B'2'%2C%20'4'%5D.jpg) |
 
-![rgb0](/output/rgb_png_plane['0'].jpg)
+### Example 2
+This example is more convincing. </br>
+A horizontal ramp grayscale image, features evenly increase in (R,G,B) value (while R = G = B) from left to right, visually presents as a dark to bright trasition.
+Slice every bitplane of this image makes it easier to understand bitplane concept.
 
-Bitplane[2] & [4] complex:
+Original image:
 
-![rgb24](https://github.com/tanido/bit-plane-slice-gui/blob/master/output/rgb_png_plane%5B'2'%2C%20'4'%5D.jpg)
+![hramp](/input/grayscale_horizontal_ramp_256.png)
+
+Bitplane [0] ~[7]:
+
+<img src="/output/grayscale_horizontal_ramp_256_png_plane['0'].jpg" width="100" height="100"> <img src="/output/grayscale_horizontal_ramp_256_png_plane['1'].jpg" width="100" height="100"> <img src="/output/grayscale_horizontal_ramp_256_png_plane['2'].jpg" width="100" height="100"> <img src="/output/grayscale_horizontal_ramp_256_png_plane['3'].jpg" width="100" height="100"> <img src="/output/grayscale_horizontal_ramp_256_png_plane['4'].jpg" width="100" height="100"> <img src="/output/grayscale_horizontal_ramp_256_png_plane['5'].jpg" width="100" height="100"> <img src="/output/grayscale_horizontal_ramp_256_png_plane['6'].jpg" width="100" height="100"> <img src="/output/grayscale_horizontal_ramp_256_png_plane['7'].jpg" width="100" height="100">
