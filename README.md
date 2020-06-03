@@ -1,5 +1,5 @@
 # bit-plane-slice-gui
-A GUI tool to slice selected bitplanes off an image, then export it. Based on Python tk container.
+A GUI tool to export selected bitplanes of an image. Based on Python tk container.
 
 ### Background
 [What is Bit plane ? (Wikipedia)](https://en.wikipedia.org/wiki/Bit_plane)
