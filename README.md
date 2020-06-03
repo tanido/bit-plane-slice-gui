@@ -30,4 +30,4 @@ Bitplane[0]:
 
 Bitplane[2] & [4] complex:
 
-![rgb24](/output/rgb_png_plane['2', '4'].jpg)
+![rgb24](https://github.com/tanido/bit-plane-slice-gui/blob/master/output/rgb_png_plane%5B'2'%2C%20'4'%5D.jpg)
