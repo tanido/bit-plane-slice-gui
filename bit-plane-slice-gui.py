@@ -21,7 +21,6 @@ def convert_image_to_bit_planes(img, bit_size):
     r_bits: Red channel bit planes
 
     """
-
     # split channels in a color (3-channel) image
     b, g, r = cv2.split(img)
     # convert image integers to bits assuming 8 bit image for each color channel
@@ -30,7 +29,6 @@ def convert_image_to_bit_planes(img, bit_size):
     r_bits = np.unpackbits(r).reshape(bit_size)
 
     return b_bits, g_bits, r_bits
-
 
 def convert_bit_planes_to_image(b_bits, g_bits, r_bits, img_size):
     """
@@ -46,10 +44,10 @@ def convert_bit_planes_to_image(b_bits, g_bits, r_bits, img_size):
     b_aug = np.packbits(b_bits).reshape(img_size)
     g_aug = np.packbits(g_bits).reshape(img_size)
     r_aug = np.packbits(r_bits).reshape(img_size)
-
+    # DEBUG USE : see b g r value written to exported image
+    # np.savetxt('baug.csv', b_aug, delimiter=',')
     # combine the channels back into a color image
     return cv2.merge((b_aug, g_aug, r_aug))
-
 
 def bit_plane_slice(b_bits, g_bits, r_bits, bit_plane_list):
     """
@@ -62,9 +60,7 @@ def bit_plane_slice(b_bits, g_bits, r_bits, bit_plane_list):
     """
     if bit_plane_list is not None:
         # tkinter.messagebox.showwarning(title='Message', message=bit_plane_list)
-        # bit_plane: int
         for bit_plane in range(0, 8):
-
             if str(bit_plane) not in str(bit_plane_list):
                 # tkinter.messagebox.showwarning(title='Message', message='bit_plane ' + str(bit_plane) + 'NOT in bit_plan_list ' + str(bit_plane_list))
                 b_bits[:, :, int(bit_plane)] = 0
@@ -135,6 +131,57 @@ class GUI(Frame):
         filename = filedialog.askopenfilename(initialdir=cur_path)
         if filename != '':
             self.importpath.set(filename)
+
+    # Select export directory
+    def OpenExportFile(self):
+        cur_dir = os.getcwd()
+        dirname = filedialog.askdirectory(initialdir=cur_dir)
+        if dirname != '':
+            self.exportpath.set(dirname)
+
+    # Slice main
+    def slice(self):
+        # Import file name
+        filepath = self.importpath.get()
+        fullname = os.path.basename(filepath)
+        basename = fullname.split('.')[0]
+        extname = fullname.split('.')[-1]
+        # Selected bitplane
+        plane_list = self.inputbitplane.get().split(',')
+        dash = '_'
+        plane_list_num = dash.join(plane_list)
+        # Export file name
+        exportdir = self.exportpath.get()
+        exportpathformat = [exportdir + '/' + basename, extname, 'bitplane' + plane_list_num + '.bmp']
+        exportpath = dash.join(exportpathformat)
+        # tkinter.messagebox.showwarning(title='Message', message='export to:' + exportpath)
+        # Import file
+        img = cv2.imread(filepath)
+        height, width, channels = img.shape
+        img_size = (height, width)
+        bit_size = img_size + (8,)
+
+        try:
+            b_ch, g_ch, r_ch = convert_image_to_bit_planes(img, bit_size)
+            # tkinter.messagebox.showwarning(title='Message', message=str(b_ch))
+            if self.inputbitplane is not None:
+                bit_plane_slice(b_ch, g_ch, r_ch, plane_list)
+                img = convert_bit_planes_to_image(b_ch, g_ch, r_ch, img_size)
+                # DEBUG USE : view num matrix of exported image
+                # img_2d = np.reshape(img,(-1, 256))
+                # np.savetxt('img_2d.csv', img_2d, delimiter=',')
+                cv2.imwrite(exportpath, img)
+                tkinter.messagebox.showwarning(title='Message', message='Export Suceed!')
+            else:
+                pass
+        except Exception:
+            tkinter.messagebox.showwarning(title='Message', message='Export Failure!')
+
+root = Tk()
+root.title('Bitplane slice tool GUI')
+app = GUI(root)
+mainloop()
+
 
     # Select export directory
     def OpenExportFile(self):
